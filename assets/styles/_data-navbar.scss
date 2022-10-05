@@ -1,0 +1,69 @@
+@import 'mixin';
+.data-navbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    &__btn {
+        border: none;
+        width: $size4-2;
+        height: $size4-2;
+        border-radius: 50%;
+        font-size: 0;
+        transition: opacity .3s ease;
+        &:hover {
+            opacity: 0.5;
+        }
+        &--prev {
+            background-image: url('@/assets/img/prev.svg');
+            @include backgroundCenter
+        }
+        &--next {
+            background-image: url('@/assets/img/next.svg');
+            @include backgroundCenter
+        }
+    }
+    &__list {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: calc(100% - 104px);
+    }
+    &__item-btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 2px 10px;
+        transition: background-color .3s ease;
+        background-color: transparent;
+        border-radius: 40px;
+        border: 0;
+        &:hover, &--chosen {
+            background-color: $primaryColor-2;
+            .data-navbar {
+                &__date, &__weekday {
+                    color: $whiteColor;
+                }
+            }
+        }
+    }
+    &__date {
+        font-weight: 600;
+        font-size: $size2-2;
+        line-height: 150%;
+        color: $fourthTextColor;
+        transition: color .3s ease;
+        &:not(:last-child) {
+            margin-right: 5px;
+        }
+
+    }
+    &__weekday {
+        font-weight: 500;
+        font-size: $size2-2;
+        line-height: 150%;
+        color: $fourthTextColor;
+        transition: color .3s ease;
+
+    }
+}

@@ -1,0 +1,36 @@
+
+
+
+.header {
+    margin-bottom: $size7;
+    width: 100%;
+    &__wrapper {
+        display: grid;
+        grid-template-columns: 380px 1fr 300px 25px;
+        grid-column-gap: 40px;
+        align-items: flex-end;
+        justify-content: space-between;
+        align-items: center;
+        padding-top:$size4;
+        padding-bottom: $size4;
+        border-bottom: 1px solid $secondTextColor;
+    }
+    &__info {
+        font-size: $size4;
+        text-transform: uppercase;
+    }
+    &__logo {
+        display: flex;
+        width: 200px;
+        height: 60px;
+        font-size: $size4;
+        font-weight: 700;
+        text-align: center;
+        text-transform: uppercase;
+        color: $textColor;
+        img {
+            height: 100%;
+            object-fit: contain;
+        }
+    }
+}

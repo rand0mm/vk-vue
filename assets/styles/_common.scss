@@ -1,0 +1,99 @@
+@import 'mixin.scss';
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    outline: none;
+    list-style: none;
+    text-decoration: none;
+}
+
+html {
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    position: relative;
+    min-width: 320px;
+    min-height: 90vh;
+    font-size: 12px;
+
+    @media (min-width: 430px) {
+        font-size: 14px;
+    }
+
+    @media (min-width: 980px) {}
+
+    @media (min-width: 1359px) {}
+}
+
+.container {
+    width: 600px;
+    margin: 0 auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+img,
+svg {
+    width: 100%;
+    @include transition;
+}
+
+path {
+    @include transition;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ul,
+li {
+    margin: 0;
+}
+
+.active {
+    display: block;
+}
+
+.deactivate {
+    display: none;
+}
+
+// .container {
+//   width: 100%;
+//   max-width: 1024px;
+//   margin: 0 auto;
+//   padding-right: 15px;
+//   padding-left: 15px;
+//   background-color: var(--color-background);
+// }
+// паттерн для скрытия
+div .visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    border: 0;
+    padding: 0;
+    clip: rect(0, 0, 0, 0);
+    overflow: hidden;
+}
+
+.overflow-hidden {
+    overflow: hidden;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    -webkit-appearance: textfield;
+    appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    display: none;
+}

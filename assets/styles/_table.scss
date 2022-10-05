@@ -1,0 +1,202 @@
+.table {
+    &__caption {
+        display: flex;
+        align-items: center;
+        margin-bottom: 5px;
+    }
+
+    &__date {
+        font-weight: 500;
+        font-size: $size2;
+        line-height: 150%;
+        color: $textColor;
+        margin-right: $size2;
+    }
+
+    &__weekday {
+        font-weight: 500;
+        font-size: $size2;
+        line-height: 150%;
+        color: $fourthTextColor;
+    }
+
+    &__row {
+        
+        &:not(:last-child) {
+            margin-bottom: $size3;
+        }
+
+        &--main {
+            display: flex;
+            align-content: center;
+
+            &:not(:last-child) {
+                margin-bottom: 0;
+            }
+            &:first-child {
+
+                .table {
+                    &__hour {
+                        &:hover {
+                            background-color: transparent;
+                            color: $fourthTextColor;
+                        }
+                    }
+                }
+            }
+        }
+
+        &--border {
+            .table__hour {
+                
+            }
+            &:not(:last-child) {
+                .table {
+
+                    &__name,
+                    &__hour {
+                        border-bottom: 0;
+                    }
+                }
+            }
+            &:not(:first-child) {
+                .table {
+                    &__name,
+                    &__hour {
+                        border-top: 0;
+                    }
+                    &__hour {
+                        height: 26px;
+                    }
+                }  
+            }
+        }
+
+        &--hover {
+            position: relative;
+
+            &::after {
+                content: '';
+                position: absolute;
+                z-index: 0;
+                width: 95%;
+                left: 50%;
+                bottom: 2px;
+                height: 21px;
+                background-color: transparent;
+                transform: translateX(-50%);
+                border-radius: 30px;
+                transition: background-color .3 ease;
+
+            }
+
+            &:hover {
+                &::after {
+                    background-color: $primaryColor-4;
+                }
+            }
+
+            .table {
+                &__hour {
+                    &:hover {
+                        background-color: transparent;
+                    }
+                }
+            }
+        }
+        &:first-child {
+            border-bottom: $border2;
+        }
+    }
+
+    &__hours {
+        display: flex;
+        align-content: center;
+        width: 100%;
+
+        &--border {
+            border-top: 0;
+            border-bottom: 0;
+        }
+    }
+
+    &__hour {
+        position: relative;
+        display: flex;
+        height: 40px;
+        width: calc(100% / 24);
+        font-weight: 500;
+        font-size: $size2;
+        line-height: 150%;
+        align-items: center;
+        justify-content: center;
+        color: $fourthTextColor;
+        border: $border;
+        cursor: pointer;
+        transition: background-color .3s ease, color .3s ease, opacity .3s ease;
+
+        &:not(:first-child) {
+            border-left: 0;
+        }
+
+        &--main {
+            border: $border2;
+        }
+
+        &:hover {
+            background-color: $primaryColor-4;
+            color: $textColor;
+        }
+        &--cover {
+            background-color: $primaryColor-2;
+            color: $secondTextColor;
+        }
+        &--chosen {
+            background-color: $primaryColor;
+            color: $secondTextColor;
+        }
+        &--cover,
+        &--chosen {
+           &:hover {
+            background-color: $primaryColor-3;
+            opacity: 0.5;
+           }
+        }
+
+        &--empty {
+            color:#FFFFFF;
+            background-color: #E75454;
+            &:hover {
+                background-color: #E75454;
+                opacity: 0.5;
+            }
+        }
+        &--fill {
+            &::after {
+                content: '';
+                position: absolute;
+                height: 10px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 125%;
+                border-radius: 20px;
+                background-color: $primaryColor-5;
+                z-index: 11;
+            }
+        }
+    }
+
+    &__name {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1;
+        width: 200px;
+        line-height: 100%;
+        font-weight: 500;
+        font-size: $size2;
+        color: $textColor;
+        border: $border2;
+        border-right: 0;
+    }
+}
