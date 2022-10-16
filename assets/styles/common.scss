@@ -11,28 +11,32 @@
 
 html {
     font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
+    @media (max-width: 760px) {
+        font-size: 10px;
+    }
 }
 
 body {
     position: relative;
     min-width: 320px;
     min-height: 90vh;
-    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
 
-    @media (min-width: 430px) {
-        font-size: 14px;
-    }
-
-    @media (min-width: 980px) {}
-
-    @media (min-width: 1359px) {}
+button {
+    cursor: pointer;
+    outline: none;
 }
 
 .container {
     width: 600px;
     margin: 0 auto;
-    padding-left: 15px;
-    padding-right: 15px;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
 }
 
 img,
@@ -63,14 +67,6 @@ li {
     display: none;
 }
 
-// .container {
-//   width: 100%;
-//   max-width: 1024px;
-//   margin: 0 auto;
-//   padding-right: 15px;
-//   padding-left: 15px;
-//   background-color: var(--color-background);
-// }
 // паттерн для скрытия
 div .visually-hidden {
     position: absolute;

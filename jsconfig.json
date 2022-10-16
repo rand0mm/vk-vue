@@ -1,12 +1,22 @@
 {
-    "compilerOptions": {
-      "baseUrl": ".",
-      "paths": {
-        "~/*": ["./*"],
-        "@/*": ["./*"],
-        "~~/*": ["./*"],
-        "@@/*": ["./*"]
-      }
+  "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "baseUrl": "./",
+    "moduleResolution": "node",
+    "paths": {
+      "@/*": [
+        "src/*"
+      ]
     },
-    "exclude": ["node_modules", ".nuxt", "dist"]
-  }
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+      "scripthost"
+    ],
+    "jsx": "preserve",
+  },
+  "exclude": ["node_modules", ".nuxt", "dist"],
+
+}

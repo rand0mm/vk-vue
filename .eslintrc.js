@@ -20,16 +20,29 @@ module.exports = {
     'vue',
   ],
   rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
-    'vue/multi-word-component-names': 'off',
-    'vue/no-multiple-template-root': 'off',
-    'max-len': ['error', { code: 120 }],
+    'max-len': ['error', {
+      code: 120,
+      ignorePattern: 'd="([\\s\\S]*?)"',
+    }],
     'vue/max-len': ['error', {
       code: 120,
       template: 100,
+      ignorePattern: 'd="([\\s\\S]*?)"',
     }],
-    ignorePattern: 'd="([\\s\\S]*?)"',
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'vue/max-attributes-per-line': ['error', {
+      singleline: {
+        max: 3,
+      },
+      multiline: {
+        max: 3,
+      },
+    }],
+    'linebreak-style': 0,
+    'vue/multi-word-component-names': 'off',
+    'vue/no-deprecated-v-bind-sync': 'off',
+    'vue/no-deprecated-router-link-tag-prop': 'off',
   },
   settings: {
     'import/resolver': {

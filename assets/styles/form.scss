@@ -1,0 +1,59 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  
+    &__input-wrapper {
+      display: flex;
+      flex-direction: column;
+    }
+  
+    &__label {
+      font-size: 14px;
+      font-weight: bold;
+      width: 100%;
+  
+    }
+  
+    &__input,
+    &__button {
+      flex-grow: 1;
+      height: $size5;
+      box-shadow: none;
+      outline: none;
+      padding-left: $size2;
+      padding-right: $size2;
+      border-radius: $size1;
+      font-size: 18px;
+      margin-top: $size1;
+      margin-bottom: $size2;
+    }
+  
+    &__input {
+      background-color: transparent;
+      border: $border;
+      color: inherit;
+    }
+  
+    &__item-btn {
+      margin-left: $size3;
+    }
+  
+    &__button-group {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+  
+      .form {
+        &__btn {
+          margin: 0;
+          width: 22%;
+        }
+      }
+    }
+  
+    &__btn {
+      margin-bottom: 20px;
+      height: 48px;
+    }
+  }
