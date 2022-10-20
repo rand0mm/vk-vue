@@ -122,6 +122,7 @@ h2 {
     left: 0;
     width: 100%;
     border-radius: 1rem;
+
     .users {
       &__item {
         &:hover {
@@ -137,6 +138,7 @@ h2 {
 
         }
       }
+
       &__name {
         width: 85%;
       }
@@ -146,6 +148,7 @@ h2 {
 
 .users {
   z-index: 3;
+
   &__list {
     display: flex;
     flex-direction: column;
@@ -164,6 +167,7 @@ h2 {
     position: relative;
     border-radius: 1rem;
     z-index: 1;
+    cursor: pointer;
     &::before {
       position: absolute;
       content: '';
@@ -206,26 +210,9 @@ h2 {
     transition: color .1s ease;
     @include captionFont;
   }
+
   &__remove {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 1rem;
-    border: $border;
-    outline: 0;
-    padding: .3rem;
     width: 15%;
-    transition: background-color .1s ease, color .1s ease, border-color .1s ease;
-    cursor: pointer;
-    &:hover{
-      background-color: $primaryColor-2;
-      border-color:$primaryColor-2;
-      color: $backgroundColor;
-    }
-    &:active {
-      background-color: $primaryColor-5;
-      border-color: $primaryColor-5;
-    }
   }
 }
 
@@ -233,4 +220,34 @@ h2 {
   &__title {
     margin-bottom: 2rem;
   }
+}
+
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  border: $border;
+  outline: 0;
+  padding: .3rem;
+  transition: background-color .1s ease, color .1s ease, border-color .1s ease;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $primaryColor-2;
+    border-color: $primaryColor-2;
+    color: $backgroundColor;
+  }
+
+  &:active {
+    background-color: $primaryColor-5;
+    border-color: $primaryColor-5;
+  }
+}
+
+
+.build-btn {
+  width: 75%;
+  font-size: 1.5rem;
+  margin: 2rem auto;
 }

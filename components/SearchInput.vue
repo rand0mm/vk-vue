@@ -8,7 +8,6 @@
         name="users"
         placeholder="Введите индентификатор или имя пользователя"
         autocomplete="off"
-        @blur.prevent="closeDropList"
         @focus.prevent="isShowFoundData=true"
       >
     </label>
@@ -78,6 +77,13 @@ export default {
       }, 300);
     },
   },
+  beforeMount() {
+    window.addEventListener('click', (e) => {
+      if (!e.target.closest('.add')) {
+        this.isShowFoundData = false;
+      }
+    });
+  },
   methods: {
     async searchByStr(value, token) { // запрос отдельно по строке
       try {
@@ -137,16 +143,13 @@ export default {
     },
     choiceUser(user) {
       const newArr = JSON.parse(JSON.stringify(this.selectedUSers));
-      console.log('выбранный пользователь', user); // выбранный пользователь
+      console.log('Выбранный пользователь', user); // выбранный пользователь
       if (!newArr.find((i) => i.id === user.id)) {
         newArr.push(user);
       }
       this.$store.commit('users/setSelectedUSers', newArr);
-
+      this.isShowFoundData = false;
       console.log('массив после добавления', this.selectedUSers); // массив после добавления
-    },
-    closeDropList() {
-      setTimeout(() => { this.isShowFoundData = false; }, 0);
     },
   },
 };

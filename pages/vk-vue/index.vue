@@ -5,6 +5,10 @@
     </h1>
     <SearchInput />
     <SelectedUsers />
+    <button class="btn build-btn">
+      Построить
+    </button>
+    <UsersFriends />
   </main>
 </template>
 
@@ -12,6 +16,7 @@
 export default {
   data() {
     return {
+      isShowUsersFriends: false,
     };
   },
   computed: {},

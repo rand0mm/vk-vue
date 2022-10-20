@@ -1,7 +1,7 @@
 <template>
   <div class="users">
     <h2 class="content__title">
-      Выбранные пользователи:
+      Общие друзья пользователей:
     </h2>
     <ul v-if="isShowUsers" class="users__list">
       <li
@@ -28,23 +28,10 @@ export default {
     };
   },
   computed: {
-    isShowUsers() {
-      return this.selectedUSers.length > 0;
-    },
-    selectedUSers() {
-      return this.$store.getters['users/selectedUSers'];
-    },
   },
   watch: {
   },
   methods: {
-    removeUser(user) {
-      let newArr = JSON.parse(JSON.stringify(this.selectedUSers));
-      if (newArr.find((i) => i.id === user.id)) {
-        newArr = newArr.filter((i) => i.id !== user.id);
-        this.$store.commit('users/setSelectedUSers', newArr);
-      }
-    },
   },
 };
 </script>
