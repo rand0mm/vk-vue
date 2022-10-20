@@ -1,4 +1,3 @@
-
 @import 'common.scss';
 @import 'header.scss';
 @import 'form.scss';
@@ -52,48 +51,186 @@ h2 {
 }
 
 .add {
-  @include flexCenter;
-  justify-content: flex-start;
+  display: flex;
+  flex-direction: column;
+  position: relative;
   margin-bottom: $size4;
+
+  &_error {
+    .add {
+      &__user-name {
+        color: rgb(199, 23, 23)
+      }
+    }
+  }
+
+  &__title {
+    margin-bottom: 2rem;
+  }
+
   &__label {
-      @include flexCenter;
-      width: 100%;
+    @include flexCenter;
+    width: 100%;
   }
+
   &__input {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: $size1 $size4;
-      margin-right: $size4;
-      border-radius: 40px;
-      border: $border;
-      width: 100%;
-      outline: 0;
-      @include captionFont;
-      color:$textColor;
-      background-color: transparent;
-      transition: background-color 0.3s ease;
-      &::placeholder {
-          color:$textColor;
-      }
-      &:hover, &:focus-within {
-          background-color: transparent;
-      }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $size1 $size4;
+    border-radius: 1rem;
+    border: $border;
+    width: 100%;
+    outline: 0;
+    @include captionFont;
+    color: $textColor;
+    background-color: transparent;
+    transition: border-color .3s ease;
+
+    &::placeholder {
+      color: $textColor;
+    }
+
+    &:hover,
+    &:focus-within {
+      border-color: $primaryColor;
+    }
   }
+
   &__btn {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: $size1 $size4;
-      transition: background-color 0.3s ease;
-      background-color: $primaryColor-3;
-      border-radius: 40px;
-      border: 0;
-      @include captionFont;
-      color:$whiteColor;
-      transition: background-color .3 ease;
-      &:hover, &:focus-within {
-          background-color: $primaryColor;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $size1 $size4;
+    transition: background-color 0.3s ease;
+    background-color: $primaryColor-3;
+    border-radius: 40px;
+    border: 0;
+    @include captionFont;
+    color: $whiteColor;
+    transition: background-color .3 ease;
+
+    &:hover,
+    &:focus-within {
+      background-color: $primaryColor;
+    }
+  }
+
+  &__users {
+    position: absolute;
+    top: calc(100% + 1rem);
+    left: 0;
+    width: 100%;
+    border-radius: 1rem;
+    .users {
+      &__item {
+        &:hover {
+          &::before {
+            opacity: 1;
+          }
+
+          .users {
+            &__name {
+              color: $whiteColor;
+            }
+          }
+
+        }
       }
+      &__name {
+        width: 85%;
+      }
+    }
+  }
+}
+
+.users {
+  z-index: 3;
+  &__list {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    padding-top: 1.3rem;
+    width: 100%;
+    border-radius: 1rem;
+    background-color: $backgroundColor;
+    box-shadow: 0px 0px 5px 3px rgba(197, 197, 197, 0.49);
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    border-radius: 1rem;
+    z-index: 1;
+    &::before {
+      position: absolute;
+      content: '';
+      top: -4%;
+      left: -4%;
+      bottom: 0;
+      right: 0;
+      width: 108%;
+      height: 108%;
+      background-color: $primaryColor;
+      border-radius: .5rem;
+      opacity: 0;
+      z-index: -1;
+      transition: opacity .1s ease;
+    }
+
+    &:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+  }
+
+  &__photo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: .8rem;
+    width: 10%;
+
+    img {
+      height: 4.42rem;
+      width: 4.42rem;
+      border-radius: .8rem;
+      border: 1px solid rgba(0, 0, 0, 0.11);
+    }
+
+  }
+
+  &__name {
+    width: 70%;
+    transition: color .1s ease;
+    @include captionFont;
+  }
+  &__remove {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1rem;
+    border: $border;
+    outline: 0;
+    padding: .3rem;
+    width: 15%;
+    transition: background-color .1s ease, color .1s ease, border-color .1s ease;
+    cursor: pointer;
+    &:hover{
+      background-color: $primaryColor-2;
+      border-color:$primaryColor-2;
+      color: $backgroundColor;
+    }
+    &:active {
+      background-color: $primaryColor-5;
+      border-color: $primaryColor-5;
+    }
+  }
+}
+
+.content {
+  &__title {
+    margin-bottom: 2rem;
   }
 }
