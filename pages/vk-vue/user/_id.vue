@@ -41,11 +41,13 @@
 </template>
 
 <script>
+import { jsonp } from 'vue-jsonp';
+
 export default {
-  async asyncData({ params, $axios }) {
+  async asyncData({ params }) {
     // https://github.com/rand0mm/vk-vue/blob/main/README.md
     // eslint-disable-next-line max-len, vue/max-len
-    const tokenVK = 'vk1.a.iKXZl3bW2iUDqqXovCr-5dw7t0zSEkOQ9cHH8Dv20qet_9lC7-Y5MLnsrGony2MYIIw8R3E1N_z1TMczUFm9S0KGjk96P8Hscwep67aOwjBEl2Qh8eV8EM2g2vIjsWmHpsVFrs5dez51iqJekRPq3H7RIY-9lBrPOwHh6zm34gM3Vowrr76KthOYKvWrVoZXp2K3uod46zGaqh-NWrqq1Q';
+    const tokenVK = 'vk1.a.Iu-BtXMlHKvmNtwrKbm6cMxzNDHuHKn8Gs_1jo1a9Ngobwc50e2iG-8IygsFbXz2MK_clnwDtao0Tuv0qCg572Fpua4k-iJfKmA4ChxGrua78DKtX6RmFHM-3jYn2yDc_HMGGGbM1AuYBVgc-GceVff0rDekFXsKY2Pamw2ciVQHxZkqeeudFuBZLA7h7X-4-FTSm4WgiLf-KN15KCLAfQ';
     let wall = null;
     function AddLeft(str, add, len) {
       let srting = String(str);
@@ -53,15 +55,12 @@ export default {
       return srting;
     }
     try {
-      const wallRes = await $axios.$post(
-        'https://api.vk.com/method/wall.get?',
-        null,
+      const wallRes = await jsonp(
+        'https://api.vk.com/method/wall.get',
         {
-          params: {
-            owner_id: params.id,
-            access_token: tokenVK,
-            v: '5.131',
-          },
+          owner_id: params.id,
+          access_token: tokenVK,
+          v: '5.131',
         },
       );
       if (wallRes.error) {

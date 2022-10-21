@@ -56,7 +56,7 @@ export default {
   },
   methods: {
     goToProfile(id) {
-      this.$router.push({ path: `vk-vue/user/${id}` });
+      this.$router.push({ path: `/vk-vue/user/${id}` });
     },
   },
 };

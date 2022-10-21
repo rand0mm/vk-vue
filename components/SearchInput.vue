@@ -41,7 +41,7 @@ export default {
       tokenVK:
         // https://github.com/rand0mm/vk-vue/blob/main/README.md
         // eslint-disable-next-line max-len, vue/max-len
-        'vk1.a.iKXZl3bW2iUDqqXovCr-5dw7t0zSEkOQ9cHH8Dv20qet_9lC7-Y5MLnsrGony2MYIIw8R3E1N_z1TMczUFm9S0KGjk96P8Hscwep67aOwjBEl2Qh8eV8EM2g2vIjsWmHpsVFrs5dez51iqJekRPq3H7RIY-9lBrPOwHh6zm34gM3Vowrr76KthOYKvWrVoZXp2K3uod46zGaqh-NWrqq1Q',
+        'vk1.a.Iu-BtXMlHKvmNtwrKbm6cMxzNDHuHKn8Gs_1jo1a9Ngobwc50e2iG-8IygsFbXz2MK_clnwDtao0Tuv0qCg572Fpua4k-iJfKmA4ChxGrua78DKtX6RmFHM-3jYn2yDc_HMGGGbM1AuYBVgc-GceVff0rDekFXsKY2Pamw2ciVQHxZkqeeudFuBZLA7h7X-4-FTSm4WgiLf-KN15KCLAfQ',
     };
   },
   computed: {
@@ -99,20 +99,16 @@ export default {
   methods: {
     async searchByStr(value, token) { // запрос отдельно по строке
       try {
-        const res = await this.$axios.$post(
-          'https://api.vk.com/method/users.search?',
-          null,
+        const res = await this.$jsonp(
+          'https://api.vk.com/method/users.search',
           {
-            params: {
-              q: JSON.stringify(value),
-              fields: 'photo_100,bdate,sex',
-              access_token: token,
-              count: '10',
-              v: '5.131',
-            },
+            q: JSON.stringify(value),
+            fields: 'photo_100,bdate,sex',
+            access_token: token,
+            count: '10',
+            v: '5.131',
           },
         );
-        console.log(res);
         if (res.error) {
           this.isSomeAxiosError = true;
           throw res.error.error_msg;
@@ -126,20 +122,16 @@ export default {
     },
     async searchById(value, token) { // запрос отдельно по id
       try {
-        const resId = await this.$axios.$post(
-          'https://api.vk.com/method/users.get?',
-          null,
+        const resId = await this.$jsonp(
+          'https://api.vk.com/method/wall.get',
           {
-            params: {
-              user_ids: value,
-              fields: 'photo_100,bdate,sex',
-              access_token: token,
-              count: '10',
-              v: '5.131',
-            },
+            user_ids: value,
+            fields: 'photo_100,bdate,sex',
+            access_token: token,
+            count: '10',
+            v: '5.131',
           },
         );
-        console.log(resId);
         if (resId.error) {
           this.isSomeAxiosError = true;
           throw resId.error.error_msg;
@@ -155,16 +147,13 @@ export default {
     },
     async getFriends(user, token) { // получение друзей пользователя
       try {
-        const friends = await this.$axios.$post(
-          'https://api.vk.com/method/friends.get?',
-          null,
+        const friends = await this.$jsonp(
+          'https://api.vk.com/method/friends.get',
           {
-            params: {
-              user_id: user.id,
-              access_token: token,
-              fields: 'photo_100',
-              v: '5.131',
-            },
+            user_id: user.id,
+            access_token: token,
+            fields: 'photo_100',
+            v: '5.131',
           },
         );
         if (friends.error) {

@@ -7,7 +7,7 @@
 # npm run generate
 
 # navigate into the build output directory
-cd .dist
+cd dist
 
 git init
 git add -A
