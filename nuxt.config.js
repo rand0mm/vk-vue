@@ -25,6 +25,7 @@ export default {
   },
 
   css: [
+    'vue2-perfect-scrollbar/dist/vue2-perfect-scrollbar.css',
     '@/assets/styles/main.scss',
   ],
 
@@ -54,7 +55,7 @@ export default {
     '~/plugins/axios.js',
     '~/plugins/portalVue.js',
     '~/plugins/jsonp.js',
-
+    '~/plugins/perfetScrollbar.js',
   ],
   build: {
     postcss: null,

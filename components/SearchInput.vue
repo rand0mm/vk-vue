@@ -8,10 +8,14 @@
         name="users"
         placeholder="Введите индентификатор или имя пользователя"
         autocomplete="off"
-        @focus.prevent="isShowFoundData=true"
+        @focus.prevent="isShowFoundData = true"
       >
     </label>
-    <div v-if="isShowFound" class="users add__users" :class="{'add_error': isSomeAxiosError}">
+    <perfect-scrollbar
+      v-if="isShowFound"
+      class="users add__users"
+      :class="{ add_error: isSomeAxiosError }"
+    >
       <ul class="users__list">
         <li
           v-for="user in users"
@@ -20,12 +24,16 @@
           @click.prevent="choiceUser(user)"
         >
           <span v-if="!isSomeAxiosError" class="users__photo">
-            <img class="users__img" :src="user.photo" :alt="'фото' + user.name">
+            <img
+              class="users__img"
+              :src="user.photo"
+              :alt="'фото' + user.name"
+            >
           </span>
           <span class="users__name">{{ user.name }} </span>
         </li>
       </ul>
-    </div>
+    </perfect-scrollbar>
   </div>
 </template>
 
@@ -52,20 +60,22 @@ export default {
       return this.$store.getters['users/selectedUSers'];
     },
     users() {
-      return this.foundUsers ? this.foundUsers.map((i) => {
-        const newUser = {
-          id: i.id,
-          name: `${i.first_name} ${i.last_name}`,
-          photo: i.photo_100,
-          bdate: i.bdate,
-          sex: {
-            id: i.sex,
-            title: i.sex === 2 ? 'Мужской' : 'Женский',
-          },
-          access: i.can_access_closed,
-        };
-        return newUser;
-      }) : [];
+      return this.foundUsers
+        ? this.foundUsers.map((i) => {
+          const newUser = {
+            id: i.id,
+            name: `${i.first_name} ${i.last_name}`,
+            photo: i.photo_100,
+            bdate: i.bdate,
+            sex: {
+              id: i.sex,
+              title: i.sex === 2 ? 'Мужской' : 'Женский',
+            },
+            access: i.can_access_closed,
+          };
+          return newUser;
+        })
+        : [];
     },
     friends() {
       return this.$store.getters['users/friends'];
@@ -82,11 +92,12 @@ export default {
         this.foundUsers = [];
         // 222697945
         // xobbit29ru
+        console.log('test');
         if (str.length > 2 && str.length <= 256) {
           this.searchByStr(str, this.tokenVK);
           this.searchById(str, this.tokenVK);
         }
-      }, 300);
+      }, 600);
     },
   },
   beforeMount() {
@@ -97,7 +108,8 @@ export default {
     });
   },
   methods: {
-    async searchByStr(value, token) { // запрос отдельно по строке
+    async searchByStr(value, token) {
+      // запрос отдельно по строке
       try {
         const res = await this.$jsonp(
           'https://api.vk.com/method/users.search',
@@ -117,21 +129,23 @@ export default {
           this.foundUsers = this.foundUsers.concat(res.response.items);
         }
       } catch (error) {
-        this.foundUsers = [{ first_name: 'Ошибка при запросе', last_name: error.message || error }];
+        this.foundUsers = [
+          {
+            first_name: 'Ошибка при запросе',
+            last_name: error.message || error,
+          },
+        ];
       }
     },
-    async searchById(value, token) { // запрос отдельно по id
+    async searchById(value, token) {
+      // запрос отдельно по id
       try {
-        const resId = await this.$jsonp(
-          'https://api.vk.com/method/wall.get',
-          {
-            user_ids: value,
-            fields: 'photo_100,bdate,sex',
-            access_token: token,
-            count: '10',
-            v: '5.131',
-          },
-        );
+        const resId = await this.$jsonp('https://api.vk.com/method/users.get', {
+          user_ids: value,
+          fields: 'photo_100,bdate,sex',
+          access_token: token,
+          v: '5.131',
+        });
         if (resId.error) {
           this.isSomeAxiosError = true;
           throw resId.error.error_msg;
@@ -142,10 +156,16 @@ export default {
           });
         }
       } catch (error) {
-        this.foundUsers = [{ first_name: 'Ошибка при запросе', last_name: error.message || error }];
+        this.foundUsers = [
+          {
+            first_name: 'Ошибка при запросе',
+            last_name: error.message || error,
+          },
+        ];
       }
     },
-    async getFriends(user, token) { // получение друзей пользователя
+    async getFriends(user, token) {
+      // получение друзей пользователя
       try {
         const friends = await this.$jsonp(
           'https://api.vk.com/method/friends.get',
@@ -185,7 +205,10 @@ export default {
         });
         this.$store.commit('users/setFriends', curList); // записан обновленный список всех друзей
         localStorage.setItem('friends', JSON.stringify(curList));
-        console.log('обновленный список всех друзей', Object.values(this.friends).length);
+        console.log(
+          'обновленный список всех друзей',
+          Object.values(this.friends).length,
+        );
         return friends.response.count;
       } catch (error) {
         console.log(`Ошибка запроса:${error.message}`);
@@ -199,7 +222,8 @@ export default {
       this.isShowFoundData = false;
       console.log('Выбранный пользователь', user); // выбранный пользователь
       if (!newArr.find((i) => i.id === user.id)) {
-        if (user.access) { // если профиль не закрыт смотрим друзей
+        if (user.access) {
+          // если профиль не закрыт смотрим друзей
           const friendsCount = await this.getFriends(user, token);
           newUser.friendsCount = friendsCount;
         }
