@@ -158,6 +158,28 @@ h2 {
     border-radius: 1rem;
     background-color: $backgroundColor;
     box-shadow: 0px 0px 5px 3px rgba(197, 197, 197, 0.49);
+    &_friends {
+      .users {
+        &__item {
+          &:hover {
+            &::before {
+              opacity: 1;
+            }
+
+            .users {
+              &__name {
+                color: $whiteColor;
+              }
+            }
+
+          }
+        }
+
+        &__name {
+          width: 85%;
+        }
+      }
+    }
   }
 
   &__item {
@@ -204,13 +226,38 @@ h2 {
     }
 
   }
-
-  &__name {
+  &__info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
     width: 70%;
+    .users {
+      &__name {
+        width: 100%;
+      }
+    }
+  }
+  &__name {
     transition: color .1s ease;
     @include captionFont;
+    &_friends {
+      width: 85%;
+    }
   }
+  &__sex {
+    width: 30%;
 
+  }
+  &__age {
+    width: 30%;
+
+  }
+  &__friends {
+    width: 30%;
+    &_error {
+      color:rgb(199, 23, 23)
+    }
+  }
   &__remove {
     width: 15%;
   }

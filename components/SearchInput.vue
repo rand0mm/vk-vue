@@ -57,9 +57,21 @@ export default {
           id: i.id,
           name: `${i.first_name} ${i.last_name}`,
           photo: i.photo_100,
+          bdate: i.bdate,
+          sex: {
+            id: i.sex,
+            title: i.sex === 2 ? 'Мужской' : 'Женский',
+          },
+          access: i.can_access_closed,
         };
         return newUser;
       }) : [];
+    },
+    friends() {
+      return this.$store.getters['users/friends'];
+    },
+    maxCross() {
+      return this.$store.getters['users/maxCross'];
     },
   },
   watch: {
@@ -93,7 +105,7 @@ export default {
           {
             params: {
               q: JSON.stringify(value),
-              fields: 'photo_100',
+              fields: 'photo_100,bdate,sex',
               access_token: token,
               count: '10',
               v: '5.131',
@@ -120,7 +132,7 @@ export default {
           {
             params: {
               user_ids: value,
-              fields: 'photo_100',
+              fields: 'photo_100,bdate,sex',
               access_token: token,
               count: '10',
               v: '5.131',
@@ -141,14 +153,67 @@ export default {
         this.foundUsers = [{ first_name: 'Ошибка при запросе', last_name: error.message || error }];
       }
     },
-    choiceUser(user) {
+    async getFriends(user, token) { // получение друзей пользователя
+      try {
+        const friends = await this.$axios.$post(
+          'https://api.vk.com/method/friends.get?',
+          null,
+          {
+            params: {
+              user_id: user.id,
+              access_token: token,
+              fields: 'photo_100',
+              v: '5.131',
+            },
+          },
+        );
+        if (friends.error) {
+          throw friends.error.error_msg;
+        }
+        // добавляем друзей
+        const curList = JSON.parse(JSON.stringify(this.friends));
+
+        // console.log('test', curList);
+        // console.log('test', friends.response.items);
+        friends.response.items.map((i) => {
+          if (curList[i.id]) {
+            if (curList[i.id].cross) {
+              curList[i.id].cross.push(user.id);
+            } else {
+              curList[i.id].cross = [user.id];
+            }
+            const itemCross = curList[i.id].cross.length;
+            if (this.maxCross < itemCross) {
+              this.$store.commit('users/setMaxCross', itemCross);
+            }
+          } else {
+            curList[i.id] = i;
+          }
+          return i;
+        });
+        this.$store.commit('users/setFriends', curList); // записан обновленный список всех друзей
+        console.log('обновленный список всех друзей', Object.values(this.friends).length);
+        return friends.response.count;
+      } catch (error) {
+        console.log(`Ошибка запроса:${error.message}`);
+        return 'error';
+      }
+    },
+    async choiceUser(user) {
+      const token = this.tokenVK;
+      const newUser = user;
       const newArr = JSON.parse(JSON.stringify(this.selectedUSers));
+      this.isShowFoundData = false;
       console.log('Выбранный пользователь', user); // выбранный пользователь
       if (!newArr.find((i) => i.id === user.id)) {
-        newArr.push(user);
+        if (user.access) { // если профиль не закрыт смотрим друзей
+          const friendsCount = await this.getFriends(user, token);
+          newUser.friendsCount = friendsCount;
+        }
+        newArr.push(newUser);
+        this.$store.commit('users/setSelectedUSers', newArr);
       }
-      this.$store.commit('users/setSelectedUSers', newArr);
-      this.isShowFoundData = false;
+
       console.log('массив после добавления', this.selectedUSers); // массив после добавления
     },
   },
