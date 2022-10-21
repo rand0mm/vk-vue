@@ -185,13 +185,17 @@ export default {
             const itemCross = curList[i.id].cross.length;
             if (this.maxCross < itemCross) {
               this.$store.commit('users/setMaxCross', itemCross);
+              localStorage.setItem('cross', JSON.stringify(itemCross));
             }
           } else {
-            curList[i.id] = i;
+            const newItem = i;
+            newItem.cross = [user.id];
+            curList[i.id] = newItem;
           }
           return i;
         });
         this.$store.commit('users/setFriends', curList); // записан обновленный список всех друзей
+        localStorage.setItem('friends', JSON.stringify(curList));
         console.log('обновленный список всех друзей', Object.values(this.friends).length);
         return friends.response.count;
       } catch (error) {
@@ -212,6 +216,7 @@ export default {
         }
         newArr.push(newUser);
         this.$store.commit('users/setSelectedUSers', newArr);
+        localStorage.setItem('users', JSON.stringify(newArr));
       }
 
       console.log('массив после добавления', this.selectedUSers); // массив после добавления

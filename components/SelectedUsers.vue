@@ -48,7 +48,6 @@ export default {
     selectedUSers() {
       const users = this.$store.getters['users/selectedUSers'];
       users.sort((a, b) => (a.name > b.name ? 1 : -1));
-      console.log(users);
       return users;
     },
   },
@@ -59,10 +58,12 @@ export default {
       if (newArr.find((i) => i.id === user.id)) {
         newArr = newArr.filter((i) => i.id !== user.id);
         this.$store.commit('users/setSelectedUSers', newArr);
+        localStorage.setItem('users', JSON.stringify(newArr));
       }
     },
     showFriendList() {
       this.$store.commit('users/setIsShowFriends', true);
+      localStorage.setItem('setIsShowFriends', JSON.stringify(true));
     },
   },
 };

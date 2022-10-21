@@ -63,4 +63,22 @@ export const mutations = {
 };
 
 export const actions = {
+  getLocal({ commit }) {
+    const users = localStorage.getItem('users');
+    if (users) {
+      commit('setSelectedUSers', JSON.parse(users));
+    }
+    const friends = localStorage.getItem('friends');
+    if (friends) {
+      commit('setFriends', JSON.parse(friends));
+    }
+    const cross = localStorage.getItem('cross');
+    if (cross) {
+      commit('setMaxCross', JSON.parse(cross));
+    }
+    const showFriends = localStorage.getItem('showFriends');
+    if (showFriends) {
+      commit('setIsShowFriends', JSON.parse(showFriends));
+    }
+  },
 };
