@@ -64,6 +64,9 @@ export default {
     showFriendList() {
       this.$store.commit('users/setIsShowFriends', true);
       localStorage.setItem('setIsShowFriends', JSON.stringify(true));
+
+      // включаем фоновую подгрузку информации о друзьях
+      this.$store.dispatch('users/loadFriendsInfo');
     },
   },
 };

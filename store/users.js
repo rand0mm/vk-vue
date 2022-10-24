@@ -20,6 +20,9 @@ export const state = () => ({
   friendsData: {},
   maxCrossData: null,
   isShowFriendsData: false,
+  loadedFriendInfoData: null,
+  toLoadFriendData: null,
+
 });
 
 export const getters = {
@@ -44,6 +47,12 @@ export const getters = {
   isShowFriends(state) {
     return state.isShowFriendsData;
   },
+  loadedFriendInfoData(state) {
+    return state.loadedFriendInfoData ? state.loadedFriendInfoData : [];
+  },
+  toLoadFriendData(state) {
+    return state.toLoadFriendData ? state.toLoadFriendData : [];
+  },
 
 };
 
@@ -59,6 +68,17 @@ export const mutations = {
   },
   setIsShowFriends(state, value) {
     state.isShowFriendsData = value;
+  },
+  setLoadedFriendInfoData(state, value) {
+    state.loadedFriendInfoData = value;
+  },
+  setToLoadFriendData(state, value) {
+    state.toLoadFriendData = value;
+  },
+  setFriendInfo(state, value) {
+    if (state.friendsData[value.id]) {
+      state.friendsData[value.id].friendsCount = value.value;
+    }
   },
 };
 
@@ -80,5 +100,22 @@ export const actions = {
     if (showFriends) {
       commit('setIsShowFriends', JSON.parse(showFriends));
     }
+    const loadedFriendInfoData = localStorage.getItem('loadedFriendInfoData');
+    if (loadedFriendInfoData) {
+      commit('setLoadedFriendInfoData', JSON.parse(loadedFriendInfoData));
+    }
+    const toLoadFriendData = localStorage.getItem('toLoadFriendData');
+    if (toLoadFriendData) {
+      commit('setToLoadFriendData', JSON.parse(toLoadFriendData));
+    }
+  },
+  loadFriendsInfo({ commit, state }) {
+    console.log(state.friendsData);
+    const arr = Object.values(state.friendsData);
+    this.$store.commit('users/setIsShowFriends', true);
+    this.$store.commit('users/setIsShowFriends', true);
+
+    commit('setToLoadFriendData', arr.filter((i) => !i.friendsCount));
+    localStorage.setItem('toLoadFriendData', JSON.stringify(arr));
   },
 };

@@ -172,7 +172,7 @@ export default {
           {
             user_id: user.id,
             access_token: token,
-            fields: 'photo_100',
+            fields: 'photo_100,bdate,sex',
             v: '5.131',
           },
         );
@@ -181,7 +181,7 @@ export default {
         }
         // добавляем друзей
         const curList = JSON.parse(JSON.stringify(this.friends));
-
+        console.log(this.friends);
         // console.log('test', curList);
         // console.log('test', friends.response.items);
         friends.response.items.map((i) => {
