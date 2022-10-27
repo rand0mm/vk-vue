@@ -59,11 +59,13 @@ export default {
         newArr = newArr.filter((i) => i.id !== user.id);
         this.$store.commit('users/setSelectedUSers', newArr);
         localStorage.setItem('users', JSON.stringify(newArr));
+        this.$store.dispatch('users/syncFriendList');
       }
     },
     showFriendList() {
+      this.$store.dispatch('users/syncFriendList');
       this.$store.commit('users/setIsShowFriends', true);
-      localStorage.setItem('setIsShowFriends', JSON.stringify(true));
+      localStorage.setItem('showFriends', JSON.stringify(true));
 
       // включаем фоновую подгрузку информации о друзьях
       this.$store.dispatch('users/loadFriendsInfo');

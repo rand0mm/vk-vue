@@ -92,7 +92,6 @@ export default {
         this.foundUsers = [];
         // 222697945
         // xobbit29ru
-        console.log('test');
         if (str.length > 2 && str.length <= 256) {
           this.searchByStr(str, this.tokenVK);
           this.searchById(str, this.tokenVK);
@@ -117,7 +116,6 @@ export default {
             q: JSON.stringify(value),
             fields: 'photo_100,bdate,sex',
             access_token: token,
-            count: '10',
             v: '5.131',
           },
         );
@@ -181,9 +179,6 @@ export default {
         }
         // добавляем друзей
         const curList = JSON.parse(JSON.stringify(this.friends));
-        console.log(this.friends);
-        // console.log('test', curList);
-        // console.log('test', friends.response.items);
         friends.response.items.map((i) => {
           if (curList[i.id]) {
             if (curList[i.id].cross) {
@@ -199,7 +194,9 @@ export default {
           } else {
             const newItem = i;
             newItem.cross = [user.id];
-            curList[i.id] = newItem;
+            if (i.first_name !== 'DELETED') {
+              curList[i.id] = newItem;
+            }
           }
           return i;
         });
@@ -211,7 +208,7 @@ export default {
         );
         return friends.response.count;
       } catch (error) {
-        console.log(`Ошибка запроса:${error.message}`);
+        console.log(`Ошибка запроса:${error.message || error}`);
         return 'error';
       }
     },

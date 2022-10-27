@@ -150,6 +150,12 @@ h2 {
 .users {
   z-index: 3;
 
+  &__wrapper {
+    max-height: 50rem;
+    margin-bottom: 20rem;
+    border-radius: 1rem;
+    padding: 1rem;
+  }
   &__list {
     display: flex;
     flex-direction: column;
@@ -189,6 +195,7 @@ h2 {
     justify-content: space-between;
     position: relative;
     border-radius: 1rem;
+    padding: 5px;
     z-index: 1;
     cursor: pointer;
     &::before {

@@ -4,7 +4,7 @@
       Веруться к списку
     </NuxtLink>
     <h1 class="content__title">
-      Профиль пользователя {{ friend.name }}
+      Профиль пользователя {{ `${friend.first_name} ${friend.last_name}` }}
     </h1>
     <div v-if="crossUsers" class="users">
       <h2 class="content__title">
@@ -78,8 +78,8 @@ export default {
         return newI;
       });
     } catch (error) {
-      console.log(`Ошибка запроса:${error.message}`);
-      return 'error';
+      console.log(`Ошибка запроса:${error.message || error}`);
+      wall = [{ text: `Ошибка запроса:${error.message || error}` }];
     }
     return {
       wall,
@@ -94,10 +94,9 @@ export default {
       return users.filter((i) => this.friend.cross.includes(i.id));
     },
     friend() {
-      let obj = this.$store.getters['users/friends'];
+      const obj = this.$store.getters['users/friends'];
       const id = this.$route.path.split('/')[3];
-      obj = obj[id];
-      return obj || '';
+      return obj[id] || '';
     },
   },
 };

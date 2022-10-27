@@ -3,31 +3,37 @@
     <h2 class="content__title">
       Друзья пользователей:
     </h2>
-    <ul class="users__list users__list_friends">
-      <li
-        v-for="user in friends"
-        :key="'foundUser-' + user.id"
-        class="users__item"
-        :style="{ opacity: (user.cross.percent || 20) / 100 }"
-        @click.prevent="goToProfile(user.id)"
-      >
-        <span class="users__photo">
-          <img class="users__img" :src="user.photo" :alt="'фото' + user.name">
-        </span>
-        <span class="users__info">
-          <span class="users__name">
-            {{ user.name }}
+    <perfect-scrollbar class="users__wrapper">
+      <ul class="users__list users__list_friends">
+        <li
+          v-for="user in friends"
+          :key="'foundUser-' + user.id"
+          class="users__item"
+          :style="{
+            backgroundColor: `rgba(0, 119, 255, ${
+              (user.cross.percent || 20) / 100
+            })`,
+          }"
+          @click.prevent="goToProfile(user.id)"
+        >
+          <span class="users__photo">
+            <img class="users__img" :src="user.photo" :alt="'фото' + user.name">
           </span>
-          <span class="users__sex">Пол:&nbsp;{{ user.sex }} </span>
-          <span class="users__age">Возвраст:&nbsp;{{ user.age }} </span>
-          <span
-            class="users__friends"
-            :class="{ users__friends_error: !user.access }"
-          >Друзей:&nbsp;{{ user.friendsCount || "Загрузка..." }}
+          <span class="users__info">
+            <span class="users__name">
+              {{ user.name }}
+            </span>
+            <span class="users__sex">Пол:&nbsp;{{ user.sex }} </span>
+            <span class="users__age">Возвраст:&nbsp;{{ user.age }} </span>
+            <span
+              class="users__friends"
+              :class="{ users__friends_error: !user.access }"
+            >Друзей:&nbsp;{{ user.friendsCount || "Загрузка..." }}
+            </span>
           </span>
-        </span>
-      </li>
-    </ul>
+        </li>
+      </ul>
+    </perfect-scrollbar>
   </div>
 </template>
 
@@ -36,6 +42,9 @@ export default {
   data() {
     return {
       delay: null,
+      isLoading: false,
+      test: 0,
+      refreshKey: 0,
       tokenVK:
         // https://github.com/rand0mm/vk-vue/blob/main/README.md
         // eslint-disable-next-line max-len, vue/max-len
@@ -44,6 +53,8 @@ export default {
   },
   computed: {
     friends() {
+      // eslint-disable-next-line no-unused-expressions
+      this.refreshKey;
       const arr = Object.values(this.$store.getters['users/friends']);
       return arr
         ? arr
@@ -78,18 +89,20 @@ export default {
     },
     // получаем данные из стора
     toLoadFriendData() {
-      const arr = Object.values(this.$store.getters['users/toLoadFriendData']);
-      return arr;
+      return this.$store.getters['users/toLoadFriendData'];
     },
   },
-  watch: {},
+  watch: {
+    toLoadFriendData() {
+      if (!this.isLoading) {
+        this.loadFriend();
+      }
+    },
+  },
   mounted() {
-    // прокидываем запрос
-    console.log(this.$store.getters['users/toLoadFriendData']);
-    this.delay = clearInterval(this.delay);
-    this.delay = setInterval(async () => {
+    if (this.isShowUsers) {
       this.loadFriend();
-    }, 600);
+    }
   },
   methods: {
     goToProfile(id) {
@@ -111,22 +124,47 @@ export default {
       return age;
     },
     async loadFriend() {
-      const newArr = JSON.parse(JSON.stringify(this.toLoadFriendData));
-      if (newArr.length < 1) { return; }
-      const workArr = [this.toLoadFriendData[0], this.toLoadFriendData[1], this.toLoadFriendData[2]];
-      const resultArray = await Promise.all([
-        this.resFriend(workArr[0].id),
-        this.resFriend(workArr[1].id),
-        this.resFriend(workArr[2].id),
-      ]);
-      resultArray.forEach((i) => {
-        this.$store.commit('users/setFriendInfo', {
-          id: i.id,
-          value: i.friendsCount,
+      if (this.toLoadFriendData.length < 1) {
+        return;
+      }
+      const routeName = this.$route.path.split('/');
+      let errorRequest = false;
+      this.isLoading = 1;
+      clearTimeout(this.delay);
+      this.delay = setTimeout(async () => {
+        this.isLoading = 0;
+      }, 1000);
+      if (routeName[routeName.length - 1] === 'vk-vue') {
+        const newArr = JSON.parse(JSON.stringify(this.toLoadFriendData));
+        const workArr = newArr.slice(0, 3);
+        const resultArray = await Promise.all(
+          workArr.map((i) => this.resFriend(i.id)),
+        );
+        resultArray.forEach((i) => {
+          if (i) {
+            this.$store.commit('users/setFriendInfo', {
+              id: i.id,
+              value: i.count,
+            });
+          } else {
+            errorRequest = true;
+          }
         });
-      });
-      newArr.splice(0, 3);
-      this.$store.commit('users/setToLoadFriendData', newArr);
+        if (!errorRequest) {
+          newArr.splice(0, 3);
+          this.refreshKey += 1;
+          this.$store.commit('users/setToLoadFriendData', newArr);
+          localStorage.setItem('toLoadFriendData', JSON.stringify(newArr));
+        }
+        // если запросы обработались раньше ограничения vk api
+        if (this.isLoading === 1) {
+        // eslint-disable-next-line no-promise-executor-return, no-unused-vars
+          const sleep = await new Promise((r) => setTimeout(r, 1200));
+          this.loadFriend();
+        } else if (this.isLoading === 0) {
+          this.loadFriend();
+        }
+      }
     },
     async resFriend(id) {
       try {
@@ -137,9 +175,15 @@ export default {
           v: '5.131',
         });
         if (res.error) {
+          console.log(res.error.error_msg);
           throw res.error.error_msg;
         }
-        return res.counters.friends;
+        return {
+          id,
+          count: res.response[0].counters
+            ? res.response[0].counters.friends
+            : '?',
+        };
       } catch (error) {
         console.log('Ошибка при запросе resFriend', error.message || error);
         return null;
